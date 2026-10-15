@@ -23,14 +23,14 @@ jobs:
         packages: 'platforms;android-34 build-tools;34.0.0'
         accept-android-sdk-licenses: true
 
-    - name: Download and SetupGradle
+    - name: Download and Setup Gradle
       run: |
         wget https://services.gradle.org/distributions/gradle-8.4-bin.zip
         unzip -q gradle-8.4-bin.zip
         echo "$PWD/gradle-8.4/bin" >> $GITHUB_PATH
 
     - name: Build debug APK with stacktrace
-              run: gradle assembleDebug --stacktrace
+      run: gradle assembleDebug --stacktrace
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
