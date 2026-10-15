@@ -22,10 +22,22 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("keystore.jks")
-            storePassword = System.getenv("SIGNING_STORE_PASSWORD")
-            keyAlias = System.getenv("SIGNING_KEY_ALIAS")
-            keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+            val keystoreFile = file("keystore.jks")
+            val storePass = System.getenv("SIGNING_STORE_PASSWORD")
+            val keyAliasEnv = System.getenv("SIGNING_KEY_ALIAS")
+            val keyPass = System.getenv("SIGNING_KEY_PASSWORD")
+
+            // Only set signing properties when keystore file and env vars exist
+            if (keystoreFile.exists()
+                && !storePass.isNullOrBlank()
+                && !keyAliasEnv.isNullOrBlank()
+                && !keyPass.isNullOrBlank()
+            ) {
+                storeFile = keystoreFile
+                storePassword = storePass
+                keyAlias = keyAliasEnv
+                keyPassword = keyPass
+            }
         }
     }
 
@@ -36,10 +48,12 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("release")
+            // Use the release signing config only if it was configured above
+            signingConfig = signingConfigs.findByName("release")
         }
         debug {
-            signingConfig = signingConfigs.getByName("release")
+            // Do NOT sign debug with the release keystore in CI
+            // Keep default debug signing (or leave empty)
         }
     }
     compileOptions {
