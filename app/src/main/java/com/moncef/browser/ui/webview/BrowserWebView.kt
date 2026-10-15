@@ -10,6 +10,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 @Composable
 fun BrowserWebView(
     url: String,
+    isDesktopMode: Boolean,
     onUrlChanged: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -30,6 +31,11 @@ fun BrowserWebView(
             }
         },
         update = { webView ->
+            if (isDesktopMode) {
+                webView.settings.userAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            } else {
+                webView.settings.userAgentString = null
+            }
             if (webView.url != url) {
                 webView.loadUrl(url)
             }
