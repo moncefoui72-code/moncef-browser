@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -28,6 +29,8 @@ import com.moncef.browser.domain.Tab
 import com.moncef.browser.ui.components.SearchEngineSelector
 import com.moncef.browser.ui.components.SearchBar
 import com.moncef.browser.ui.components.TabGridScreen
+import com.moncef.browser.ui.player.FloatingVideoWidget
+import com.moncef.browser.ui.player.VideoPlayerScreen
 import com.moncef.browser.ui.theme.MoncefBrowserTheme
 import com.moncef.browser.ui.webview.BrowserWebView
 
@@ -43,6 +46,8 @@ class MainActivity : ComponentActivity() {
                     val tabs = remember { mutableStateListOf(Tab()) }
                     var currentTabId by remember { mutableStateOf(tabs.first().id) }
                     var showTabGrid by remember { mutableStateOf(false) }
+                    var showVideoPlayer by remember { mutableStateOf(false) }
+                    var currentVideoUrl by remember { mutableStateOf("") }
                     var searchText by remember { mutableStateOf("") }
                     var selectedEngine by remember { mutableStateOf(SearchEngine.GOOGLE) }
 
@@ -50,7 +55,7 @@ class MainActivity : ComponentActivity() {
 
                     Scaffold(
                         topBar = {
-                            if (!showTabGrid) {
+                            if (!showTabGrid && !showVideoPlayer) {
                                 Column(modifier = Modifier.fillMaxWidth()) {
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
@@ -84,6 +89,17 @@ class MainActivity : ComponentActivity() {
                                         }
                                     }
                                 }
+                            } else if (showVideoPlayer) {
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        IconButton(onClick = { showVideoPlayer = false }) {
+                                            Icon(Icons.Default.ArrowBack, contentDescription = null)
+                                        }
+                                    }
+                                }
                             }
                         }
                     ) { innerPadding ->
@@ -92,7 +108,9 @@ class MainActivity : ComponentActivity() {
                                 .fillMaxSize()
                                 .padding(innerPadding)
                         ) {
-                            if (showTabGrid) {
+                            if (showVideoPlayer) {
+                                VideoPlayerScreen(videoUrl = currentVideoUrl)
+                            } else if (showTabGrid) {
                                 TabGridScreen(
                                     tabs = tabs,
                                     currentTabId = currentTabId,
@@ -118,13 +136,21 @@ class MainActivity : ComponentActivity() {
                                     }
                                 )
                             } else {
-                                BrowserWebView(
-                                    url = currentTab.url,
-                                    onUrlChanged = { newUrl ->
-                                        currentTab.url = newUrl
-                                    },
-                                    modifier = Modifier.fillMaxSize()
-                                )
+                                Box(modifier = Modifier.fillMaxSize()) {
+                                    BrowserWebView(
+                                        url = currentTab.url,
+                                        onUrlChanged = { newUrl ->
+                                            currentTab.url = newUrl
+                                        },
+                                        modifier = Modifier.fillMaxSize()
+                                    )
+                                    FloatingVideoWidget(
+                                        onVideoClicked = {
+                                            currentVideoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                                            showVideoPlayer = true
+                                        }
+                                    )
+                                }
                             }
                         }
                     }
