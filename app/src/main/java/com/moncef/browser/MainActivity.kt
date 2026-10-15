@@ -1,5 +1,6 @@
 package com.moncef.browser
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -24,8 +25,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.moncef.browser.domain.SearchEngine
 import com.moncef.browser.domain.Tab
+import com.moncef.browser.ui.components.BrowserTopMenu
 import com.moncef.browser.ui.components.SearchEngineSelector
 import com.moncef.browser.ui.components.SearchBar
 import com.moncef.browser.ui.components.TabGridScreen
@@ -43,6 +46,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    val context = LocalContext.current
                     val tabs = remember { mutableStateListOf(Tab()) }
                     var currentTabId by remember { mutableStateOf(tabs.first().id) }
                     var showTabGrid by remember { mutableStateOf(false) }
@@ -84,6 +88,27 @@ class MainActivity : ComponentActivity() {
                                                 }
                                             )
                                         }
+                                        BrowserTopMenu(
+                                            isDesktopMode = currentTab.isDesktopMode,
+                                            onToggleDesktopMode = {
+                                                currentTab.isDesktopMode = !currentTab.isDesktopMode
+                                            },
+                                            onShareClicked = {
+                                                val intent = Intent().apply {
+                                                    action = Intent.ACTION_SEND
+                                                    putExtra(Intent.EXTRA_TEXT, currentTab.url)
+                                                    type = "text/plain"
+                                                }
+                                                context.startActivity(Intent.createChooser(intent, "مشاركة الرابط"))
+                                            },
+                                            onNewIncognitoTab = {
+                                                val newTab = Tab(isIncognito = true, title = "تبويب خفي")
+                                                tabs.add(newTab)
+                                                currentTabId = newTab.id
+                                                searchText = ""
+                                                showTabGrid = false
+                                            }
+                                        )
                                         IconButton(onClick = { showTabGrid = true }) {
                                             Icon(Icons.Default.Menu, contentDescription = null)
                                         }
@@ -139,6 +164,7 @@ class MainActivity : ComponentActivity() {
                                 Box(modifier = Modifier.fillMaxSize()) {
                                     BrowserWebView(
                                         url = currentTab.url,
+                                        isDesktopMode = currentTab.isDesktopMode,
                                         onUrlChanged = { newUrl ->
                                             currentTab.url = newUrl
                                         },
