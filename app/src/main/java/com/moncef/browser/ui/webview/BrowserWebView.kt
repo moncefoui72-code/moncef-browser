@@ -1,8 +1,8 @@
 package com.moncef.browser.ui.webview
 
+import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
@@ -10,6 +10,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 @Composable
 fun BrowserWebView(
     url: String,
+    onUrlChanged: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     AndroidView(
@@ -19,7 +20,12 @@ fun BrowserWebView(
                 settings.javaScriptEnabled = true
                 settings.domStorageEnabled = true
                 settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-                webViewClient = WebViewClient()
+                
+                val cookieManager = CookieManager.getInstance()
+                cookieManager.setAcceptCookie(true)
+                cookieManager.setAcceptThirdPartyCookies(this, false)
+
+                webViewClient = MoncefWebViewClient(onUrlChanged)
                 loadUrl(url)
             }
         },
