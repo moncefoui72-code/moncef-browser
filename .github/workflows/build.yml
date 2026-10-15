@@ -29,7 +29,7 @@ jobs:
         unzip -q gradle-8.4-bin.zip
         echo "$PWD/gradle-8.4/bin" >> $GITHUB_PATH
 
-    - name: Build debug APK with stacktrace
+    - name: Build debug APK
       run: gradle assembleDebug --stacktrace
 
     - name: Upload APK
