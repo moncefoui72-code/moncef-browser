@@ -4,12 +4,6 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Circular background -->
-    <path
-        android:fillColor="#FF7043"
-        android:pathData="M54,0 A54,54 0 1,0 54,108 A54,54 0 1,0 54,0" />
-    <!-- Play triangle -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M44,36 L44,72 L76,54 Z" />
+    <path android:fillColor="#FF7043" android:pathData="M54,0 A54,54 0 1,0 54,108 A54,54 0 1,0 54,0"/>
+    <path android:fillColor="#FFFFFF" android:pathData="M44,36 L44,72 L76,54 Z"/>
 </vector>
