@@ -4,6 +4,55 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <path android:fillColor="#FF7043" android:pathData="M54,0 A54,54 0 1,0 54,108 A54,54 0 1,0 54,0"/>
-    <path android:fillColor="#FFFFFF" android:pathData="M44,36 L44,72 L76,54 Z"/>
+
+    <!-- blue round background -->
+    <path
+        android:fillColor="#0A5AB6"
+        android:pathData="M54,0 A54,54 0 1,0 54,108 A54,54 0 1,0 54,0 Z" />
+
+    <!-- subtle outer highlight -->
+    <path
+        android:fillColor="#0E6ED9"
+        android:pathData="M54,6 A48,48 0 1,0 54,102 A48,48 0 1,0 54,6 Z" />
+
+    <!-- north / center white compass stem -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,18 L64,47 L58,47 L58,74 L50,74 L50,47 L44,47 Z" />
+
+    <!-- red arrow -->
+    <path
+        android:fillColor="#FF2D2D"
+        android:pathData="M54,18 L81,46 L73,46 L73,72 L61,72 L61,46 L54,46 Z" />
+
+    <!-- south white base shape -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,90 L60,58 L70,58 L54,85 L38,58 L48,58 Z" />
+
+    <!-- left/right white compass wedges -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M18,54 L49,48 L49,56 L18,61 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M90,54 L59,48 L59,56 L90,61 Z" />
+
+    <!-- white central M/rose stylization -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M33,67 L42,32 L52,58 L62,32 L72,67 L62,67 L57,51 L52,67 L47,51 L42,67 Z"/>
+
+    <!-- cardinal letters approximation as simple stroke marks -->
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round" android:pathData="M27,16 L27,26 M27,16 L21,22 M27,16 L33,22"/>
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round" android:pathData="M81,16 L81,26 M81,16 L75,22 M81,16 L87,22"/>
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round" android:pathData="M27,92 L27,82 M27,92 L21,86 M27,92 L33,86"/>
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="3" android:strokeLineCap="round" android:pathData="M81,92 L81,82 M81,92 L75,86 M81,92 L87,86"/>
+
+    <!-- subtle inner ring -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="#2E8CF7"
+        android:strokeWidth="2"
+        android:pathData="M54,16 A38,38 0 1,1 54,92 A38,38 0 1,1 54,16 Z" />
 </vector>
